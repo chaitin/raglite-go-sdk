@@ -13,7 +13,6 @@ type SearchRequest struct {
 	DatasetID           string                 `json:"dataset_id"`
 	TopK                int                    `json:"top_k,omitempty"`
 	RetrievalMode       string                 `json:"retrieval_mode,omitempty"` // full | smart
-	Filters             map[string]interface{} `json:"filters,omitempty"`
 	SimilarityThreshold float64                `json:"similarity_threshold,omitempty"`
 	Metadata            map[string]interface{} `json:"metadata,omitempty"`
 	Tags                []string               `json:"tags,omitempty"`
@@ -28,7 +27,7 @@ type SearchResponse struct {
 }
 
 // Search 执行搜索
-func (s *SearchService) Search(ctx context.Context, req *SearchRequest) (*SearchResponse, error) {
+func (s *SearchService) Retrieve(ctx context.Context, req *SearchRequest) (*SearchResponse, error) {
 	// 设置默认值
 	if req.TopK <= 0 {
 		req.TopK = 10

@@ -80,7 +80,7 @@ func main() {
 
 	// 高级示例 3: 带过滤的搜索
 	fmt.Println("=== 带过滤的高级搜索 ===")
-	searchResp, err := client.Search.Search(ctx, &sdk.SearchRequest{
+	searchResp, err := client.Search.Retrieve(ctx, &sdk.SearchRequest{
 		Query:               "人工智能",
 		DatasetID:           dataset.ID,
 		TopK:                10,

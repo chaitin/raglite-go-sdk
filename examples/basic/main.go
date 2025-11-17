@@ -110,7 +110,7 @@ RAGLite 是一个轻量级的 RAG (Retrieval-Augmented Generation) 系统。
 
 	// 示例 6: 搜索
 	fmt.Println("=== 搜索文档 ===")
-	searchResp, err := client.Search.Search(ctx, &sdk.SearchRequest{
+	searchResp, err := client.Search.Retrieve(ctx, &sdk.SearchRequest{
 		Query:     "RAGLite 有哪些功能",
 		DatasetID: dataset.ID,
 		TopK:      5,
