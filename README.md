@@ -239,6 +239,12 @@ doc, err := client.Documents.Get(ctx, datasetID, documentID)
 
 // 删除文档
 err := client.Documents.Delete(ctx, datasetID, documentID)
+
+// 批量删除文档
+err := client.Documents.BatchDelete(ctx, &sdk.BatchDeleteDocumentsRequest{
+    DatasetID:   datasetID,
+    DocumentIDs: []string{docID1, docID2, docID3},
+})
 ```
 
 ### 5. 搜索

@@ -47,6 +47,12 @@ type ListDocumentsResponse struct {
 	PageSize  int        `json:"page_size"`
 }
 
+// BatchDeleteDocumentsRequest 批量删除文档请求
+type BatchDeleteDocumentsRequest struct {
+	DatasetID   string   `json:"-"`
+	DocumentIDs []string `json:"document_ids"`
+}
+
 // Upload 上传文档
 func (s *DocumentsService) Upload(ctx context.Context, req *UploadDocumentRequest) (*UploadDocumentResponse, error) {
 	// 创建 multipart form
@@ -162,4 +168,19 @@ func (s *DocumentsService) Get(ctx context.Context, datasetID, documentID string
 func (s *DocumentsService) Delete(ctx context.Context, datasetID, documentID string) error {
 	path := fmt.Sprintf("/api/v1/datasets/%s/documents/%s", datasetID, documentID)
 	return s.client.do(ctx, "DELETE", path, nil, nil)
+}
+
+// BatchDelete 批量删除文档
+func (s *DocumentsService) BatchDelete(ctx context.Context, req *BatchDeleteDocumentsRequest) error {
+	if len(req.DocumentIDs) == 0 {
+		return nil
+	}
+
+	path := fmt.Sprintf("/api/v1/datasets/%s/documents/batch-delete", req.DatasetID)
+
+	body := map[string]interface{}{
+		"document_ids": req.DocumentIDs,
+	}
+
+	return s.client.do(ctx, "POST", path, body, nil)
 }
