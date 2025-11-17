@@ -35,9 +35,9 @@ func main() {
 		ModelType: "chat",
 		Provider:  "openai",
 		ModelName: "gpt-4",
-		Config: map[string]interface{}{
-			"api_key":     os.Getenv("OPENAI_API_KEY"),
-			"temperature": 0.7,
+		Config: sdk.AIModelConfig{
+			APIKey:      os.Getenv("OPENAI_API_KEY"),
+			Temperature: sdk.Ptr(0.7),
 		},
 		IsDefault: true,
 	})
@@ -67,9 +67,9 @@ func main() {
 	dataset, err := client.Datasets.Create(ctx, &sdk.CreateDatasetRequest{
 		Name:        "技术文档",
 		Description: "公司技术文档知识库",
-		Config: map[string]interface{}{
-			"chunk_size":    512,
-			"chunk_overlap": 50,
+		Config: sdk.DatasetConfig{
+			ChunkSize:    512,
+			ChunkOverlap: 50,
 		},
 	})
 	if err != nil {

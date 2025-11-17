@@ -12,26 +12,26 @@ type ModelsService struct {
 
 // CreateRequest 创建模型请求
 type CreateModelRequest struct {
-	Name         string                 `json:"name"`
-	Description  string                 `json:"description,omitempty"`
-	ModelType    string                 `json:"model_type"`
-	Provider     string                 `json:"provider"`
-	ModelName    string                 `json:"model_name"`
-	Config       map[string]interface{} `json:"config,omitempty"`
-	Capabilities map[string]interface{} `json:"capabilities,omitempty"`
-	IsDefault    bool                   `json:"is_default,omitempty"`
+	Name         string            `json:"name"`
+	Description  string            `json:"description,omitempty"`
+	ModelType    string            `json:"model_type"`
+	Provider     string            `json:"provider"`
+	ModelName    string            `json:"model_name"`
+	Config       AIModelConfig     `json:"config,omitempty"`
+	Capabilities ModelCapabilities `json:"capabilities,omitempty"`
+	IsDefault    bool              `json:"is_default,omitempty"`
 }
 
 // UpdateModelRequest 更新模型请求
 type UpdateModelRequest struct {
-	Name         *string                 `json:"name,omitempty"`
-	Description  *string                 `json:"description,omitempty"`
-	Provider     *string                 `json:"provider,omitempty"`
-	ModelName    *string                 `json:"model_name,omitempty"`
-	Config       *map[string]interface{} `json:"config,omitempty"`
-	Capabilities *map[string]interface{} `json:"capabilities,omitempty"`
-	Status       *string                 `json:"status,omitempty"`
-	IsDefault    *bool                   `json:"is_default,omitempty"`
+	Name         *string            `json:"name,omitempty"`
+	Description  *string            `json:"description,omitempty"`
+	Provider     *string            `json:"provider,omitempty"`
+	ModelName    *string            `json:"model_name,omitempty"`
+	Config       *AIModelConfig     `json:"config,omitempty"`
+	Capabilities *ModelCapabilities `json:"capabilities,omitempty"`
+	Status       *string            `json:"status,omitempty"`
+	IsDefault    *bool              `json:"is_default,omitempty"`
 }
 
 // ListModelsRequest 列表查询请求
@@ -55,9 +55,9 @@ type ListProviderModelsRequest struct {
 
 // CheckModelRequest 检查模型配置请求
 type CheckModelRequest struct {
-	Provider  string                 `json:"provider"`
-	ModelName string                 `json:"model_name"`
-	Config    map[string]interface{} `json:"config"`
+	Provider  string        `json:"provider"`
+	ModelName string        `json:"model_name"`
+	Config    AIModelConfig `json:"config"`
 }
 
 // Create 创建 AI 模型

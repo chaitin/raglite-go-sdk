@@ -27,8 +27,8 @@ func main() {
 	checkResp, err := client.Models.Check(ctx, &sdk.CheckModelRequest{
 		Provider:  "openai",
 		ModelName: "gpt-4",
-		Config: map[string]interface{}{
-			"api_key": os.Getenv("OPENAI_API_KEY"),
+		Config: sdk.AIModelConfig{
+			APIKey: os.Getenv("OPENAI_API_KEY"),
 		},
 	})
 	if err != nil {
@@ -66,13 +66,11 @@ func main() {
 		Name:            "高级知识库",
 		Description:     "使用混合检索和重排序的高级知识库",
 		DenseModelID:    &denseModel.ID,
-		SparseModelID:   ptrString(sparseModel.ID),
-		RerankerModelID: ptrString(rerankerModel.ID),
-		Config: map[string]interface{}{
-			"chunk_size":     512,
-			"chunk_overlap":  100,
-			"enable_summary": true,
-			"enable_ocr":     false,
+		SparseModelID:   sdk.Ptr(sparseModel.ID),
+		RerankerModelID: sdk.Ptr(rerankerModel.ID),
+		Config: sdk.DatasetConfig{
+			ChunkSize:    512,
+			ChunkOverlap: 100,
 		},
 	})
 	if err != nil {
@@ -156,13 +154,12 @@ func main() {
 
 	// 高级示例 6: 更新模型配置
 	fmt.Println("=== 更新数据集配置 ===")
-	newStatus := "active"
-	newConfig := map[string]interface{}{
-		"chunk_size": 1024,
-	}
 	updatedDataset, err := client.Datasets.Update(ctx, dataset.ID, &sdk.UpdateDatasetRequest{
-		Status: &newStatus,
-		Config: &newConfig,
+		Status: sdk.Ptr("active"),
+		Config: sdk.Ptr(sdk.DatasetConfig{
+			ChunkSize:    1024,
+			ChunkOverlap: 100,
+		}),
 	})
 	if err != nil {
 		log.Printf("Failed to update dataset: %v", err)
@@ -198,12 +195,8 @@ func createOrGetModel(ctx context.Context, client *sdk.Client, modelType, modelN
 		ModelType: modelType,
 		Provider:  provider,
 		ModelName: modelName,
-		Config: map[string]interface{}{
-			"api_key": os.Getenv("OPENAI_API_KEY"),
+		Config: sdk.AIModelConfig{
+			APIKey: os.Getenv("OPENAI_API_KEY"),
 		},
 	})
-}
-
-func ptrString(s string) *string {
-	return &s
 }

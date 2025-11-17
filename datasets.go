@@ -12,27 +12,27 @@ type DatasetsService struct {
 
 // CreateDatasetRequest 创建数据集请求
 type CreateDatasetRequest struct {
-	Name            string                 `json:"name"`
-	Description     string                 `json:"description,omitempty"`
-	DenseModelID    *string                `json:"dense_model_id,omitempty"`
-	SparseModelID   *string                `json:"sparse_model_id,omitempty"`
-	AnalysisModelID *string                `json:"analysis_model_id,omitempty"`
-	RerankerModelID *string                `json:"reranker_model_id,omitempty"`
-	VisionModelID   *string                `json:"vision_model_id,omitempty"`
-	Config          map[string]interface{} `json:"config,omitempty"`
+	Name            string        `json:"name"`
+	Description     string        `json:"description,omitempty"`
+	DenseModelID    *string       `json:"dense_model_id,omitempty"`
+	SparseModelID   *string       `json:"sparse_model_id,omitempty"`
+	AnalysisModelID *string       `json:"analysis_model_id,omitempty"`
+	RerankerModelID *string       `json:"reranker_model_id,omitempty"`
+	VisionModelID   *string       `json:"vision_model_id,omitempty"`
+	Config          DatasetConfig `json:"config,omitempty"`
 }
 
 // UpdateDatasetRequest 更新数据集请求
 type UpdateDatasetRequest struct {
-	Name            *string                 `json:"name,omitempty"`
-	Description     *string                 `json:"description,omitempty"`
-	DenseModelID    *string                 `json:"dense_model_id,omitempty"`
-	SparseModelID   *string                 `json:"sparse_model_id,omitempty"`
-	AnalysisModelID *string                 `json:"analysis_model_id,omitempty"`
-	RerankerModelID *string                 `json:"reranker_model_id,omitempty"`
-	VisionModelID   *string                 `json:"vision_model_id,omitempty"`
-	Config          *map[string]interface{} `json:"config,omitempty"`
-	Status          *string                 `json:"status,omitempty"`
+	Name            *string        `json:"name,omitempty"`
+	Description     *string        `json:"description,omitempty"`
+	DenseModelID    *string        `json:"dense_model_id,omitempty"`
+	SparseModelID   *string        `json:"sparse_model_id,omitempty"`
+	AnalysisModelID *string        `json:"analysis_model_id,omitempty"`
+	RerankerModelID *string        `json:"reranker_model_id,omitempty"`
+	VisionModelID   *string        `json:"vision_model_id,omitempty"`
+	Config          *DatasetConfig `json:"config,omitempty"`
+	Status          *string        `json:"status,omitempty"`
 }
 
 // ListDatasetsRequest 列表查询请求

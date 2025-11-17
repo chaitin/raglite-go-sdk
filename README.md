@@ -17,6 +17,17 @@ RAGLite 的官方 Go SDK，提供简洁、类型安全的 API 来访问 RAGLite 
 go get github.com/chaitin/raglite-go-sdk
 ```
 
+## 辅助函数
+
+SDK 提供了便捷的辅助函数：
+
+```go
+// Ptr 用于创建指针，简化可选字段的赋值
+temperature := sdk.Ptr(0.7)          // *float64
+maxTokens := sdk.Ptr(1000)           // *int
+description := sdk.Ptr("描述信息")   // *string
+```
+
 ## 快速开始
 
 ```go
@@ -129,9 +140,13 @@ model, err := client.Models.Create(ctx, &sdk.CreateModelRequest{
     ModelType: "chat",
     Provider:  "openai",
     ModelName: "gpt-4",
-    Config: map[string]interface{}{
-        "api_key":     "your-api-key",
-        "temperature": 0.7,
+    Config: sdk.AIModelConfig{
+        APIKey:      "your-api-key",
+        Temperature: sdk.Ptr(0.7),
+    },
+    Capabilities: sdk.ModelCapabilities{
+        SupportsStreaming: sdk.Ptr(true),
+        ContextWindow:     sdk.Ptr(8192),
     },
     IsDefault: true,
 })
@@ -146,9 +161,8 @@ models, err := client.Models.List(ctx, &sdk.ListModelsRequest{
 model, err := client.Models.Get(ctx, modelID)
 
 // 更新模型
-newName := "GPT-4 Turbo"
 model, err := client.Models.Update(ctx, modelID, &sdk.UpdateModelRequest{
-    Name: &newName,
+    Name: sdk.Ptr("GPT-4 Turbo"),
 })
 
 // 删除模型
@@ -158,8 +172,8 @@ err := client.Models.Delete(ctx, modelID)
 check, err := client.Models.Check(ctx, &sdk.CheckModelRequest{
     Provider:  "openai",
     ModelName: "gpt-4",
-    Config: map[string]interface{}{
-        "api_key": "your-api-key",
+    Config: sdk.AIModelConfig{
+        APIKey: "your-api-key",
     },
 })
 ```
@@ -171,9 +185,9 @@ check, err := client.Models.Check(ctx, &sdk.CheckModelRequest{
 dataset, err := client.Datasets.Create(ctx, &sdk.CreateDatasetRequest{
     Name:        "技术文档",
     Description: "公司技术文档知识库",
-    Config: map[string]interface{}{
-        "chunk_size":    512,
-        "chunk_overlap": 50,
+    Config: sdk.DatasetConfig{
+        ChunkSize:    512,
+        ChunkOverlap: 50,
     },
 })
 
@@ -187,7 +201,7 @@ dataset, err := client.Datasets.Get(ctx, datasetID)
 
 // 更新数据集
 dataset, err := client.Datasets.Update(ctx, datasetID, &sdk.UpdateDatasetRequest{
-    Description: ptrString("更新后的描述"),
+    Description: sdk.Ptr("更新后的描述"),
 })
 
 // 获取统计信息
