@@ -237,6 +237,34 @@ docs, err := client.Documents.List(ctx, &sdk.ListDocumentsRequest{
 // 获取文档详情
 doc, err := client.Documents.Get(ctx, datasetID, documentID)
 
+// 更新文档的 metadata 和 tags
+updatedDoc, err := client.Documents.Update(ctx, &sdk.UpdateDocumentRequest{
+    DatasetID:  datasetID,
+    DocumentID: documentID,
+    Metadata: map[string]interface{}{
+        "author":  "Jane Doe",
+        "version": "2.0",
+        "status":  "published",
+    },
+    Tags: []string{"技术", "文档", "更新"},
+})
+
+// 只更新 metadata
+updatedDoc, err := client.Documents.Update(ctx, &sdk.UpdateDocumentRequest{
+    DatasetID:  datasetID,
+    DocumentID: documentID,
+    Metadata: map[string]interface{}{
+        "reviewed": true,
+    },
+})
+
+// 只更新 tags
+updatedDoc, err := client.Documents.Update(ctx, &sdk.UpdateDocumentRequest{
+    DatasetID:  datasetID,
+    DocumentID: documentID,
+    Tags: []string{"新标签"},
+})
+
 // 删除文档
 err := client.Documents.Delete(ctx, datasetID, documentID)
 

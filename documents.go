@@ -184,3 +184,31 @@ func (s *DocumentsService) BatchDelete(ctx context.Context, req *BatchDeleteDocu
 
 	return s.client.do(ctx, "POST", path, body, nil)
 }
+
+// UpdateDocumentRequest 更新文档请求
+type UpdateDocumentRequest struct {
+	DatasetID  string                 `json:"-"`
+	DocumentID string                 `json:"-"`
+	Metadata   map[string]interface{} `json:"metadata,omitempty"`
+	Tags       []string               `json:"tags,omitempty"`
+}
+
+// Update 更新文档的 metadata 和 tags
+func (s *DocumentsService) Update(ctx context.Context, req *UpdateDocumentRequest) (*Document, error) {
+	var result Document
+	path := fmt.Sprintf("/api/v1/datasets/%s/documents/%s", req.DatasetID, req.DocumentID)
+
+	body := make(map[string]interface{})
+	if req.Metadata != nil {
+		body["metadata"] = req.Metadata
+	}
+	if req.Tags != nil {
+		body["tags"] = req.Tags
+	}
+
+	err := s.client.do(ctx, "PATCH", path, body, &result)
+	if err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
