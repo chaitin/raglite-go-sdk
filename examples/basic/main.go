@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/raglite/raglite/sdk"
+	sdk "github.com/chaitin/raglite-go-sdk"
 )
 
 func main() {

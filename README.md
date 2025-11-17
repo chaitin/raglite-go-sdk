@@ -14,7 +14,7 @@ RAGLite 的官方 Go SDK，提供简洁、类型安全的 API 来访问 RAGLite 
 ## 安装
 
 ```bash
-go get github.com/raglite/raglite/sdk
+go get github.com/chaitin/raglite-go-sdk
 ```
 
 ## 快速开始
@@ -27,7 +27,7 @@ import (
     "fmt"
     "log"
 
-    "github.com/raglite/raglite/sdk"
+    sdk "github.com/chaitin/raglite-go-sdk"
 )
 
 func main() {
