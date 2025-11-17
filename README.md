@@ -31,8 +31,9 @@ import (
 )
 
 func main() {
-    // 创建客户端
-    client, err := sdk.NewClient("http://localhost:8080")
+    client, err := sdk.NewClient(
+        "http://localhost:8080",
+    )
     if err != nil {
         log.Fatal(err)
     }
@@ -89,9 +90,22 @@ import "time"
 // 基础配置
 client, _ := sdk.NewClient("http://localhost:8080")
 
+// 使用 API Key 认证
+client, _ := sdk.NewClient(
+    "http://localhost:8080",
+    sdk.WithAPIKey("your-api-key-here"),
+)
+
 // 自定义超时
 client, _ := sdk.NewClient(
     "http://localhost:8080",
+    sdk.WithTimeout(60 * time.Second),
+)
+
+// 组合使用多个选项
+client, _ := sdk.NewClient(
+    "http://localhost:8080",
+    sdk.WithAPIKey("your-api-key-here"),
     sdk.WithTimeout(60 * time.Second),
 )
 

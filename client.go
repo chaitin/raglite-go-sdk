@@ -14,6 +14,7 @@ import (
 // Client RAGLite SDK 客户端
 type Client struct {
 	baseURL    string
+	apiKey     string
 	httpClient *http.Client
 
 	// Services
@@ -75,6 +76,11 @@ func (c *Client) do(ctx context.Context, method, path string, body interface{}, 
 
 	if body != nil {
 		req.Header.Set("Content-Type", "application/json")
+	}
+
+	// 设置 API Key
+	if c.apiKey != "" {
+		req.Header.Set("Authorization", "Bearer "+c.apiKey)
 	}
 
 	resp, err := c.httpClient.Do(req)

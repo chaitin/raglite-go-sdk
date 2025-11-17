@@ -28,3 +28,10 @@ func WithTransport(transport http.RoundTripper) Option {
 		c.httpClient.Transport = transport
 	}
 }
+
+// WithAPIKey 设置 API Key
+func WithAPIKey(apiKey string) Option {
+	return func(c *Client) {
+		c.apiKey = apiKey
+	}
+}
