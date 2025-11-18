@@ -17,11 +17,12 @@ type DocumentsService struct {
 
 // UploadDocumentRequest 上传文档请求
 type UploadDocumentRequest struct {
-	DatasetID string
-	File      io.Reader
-	Filename  string
-	Tags      []string
-	Metadata  map[string]interface{}
+	DatasetID  string
+	DocumentID string
+	File       io.Reader
+	Filename   string
+	Tags       []string
+	Metadata   map[string]interface{}
 }
 
 // UploadDocumentResponse 上传文档响应
@@ -88,6 +89,13 @@ func (s *DocumentsService) Upload(ctx context.Context, req *UploadDocumentReques
 		}
 		if err := writer.WriteField("metadata", string(metadataJSON)); err != nil {
 			return nil, fmt.Errorf("failed to write metadata field: %w", err)
+		}
+	}
+
+	// 添加可选的 document_id（用于更新）
+	if req.DocumentID != "" {
+		if err := writer.WriteField("document_id", req.DocumentID); err != nil {
+			return nil, fmt.Errorf("failed to write document_id field: %w", err)
 		}
 	}
 

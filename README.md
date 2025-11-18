@@ -243,6 +243,24 @@ resp, err := client.Documents.Upload(ctx, &sdk.UploadDocumentRequest{
     Filename:  "doc.md",
 })
 
+// 更新已有文档（通过提供 DocumentID 替换文档内容）
+// 此操作会自动：1) 覆盖 MinIO 文件 2) 更新 PostgreSQL 记录 3) 删除旧向量并重新索引
+file, _ := os.Open("updated_document.md")
+defer file.Close()
+
+resp, err := client.Documents.Upload(ctx, &sdk.UploadDocumentRequest{
+    DatasetID:  datasetID,
+    DocumentID: existingDocID,  // 提供已存在的文档 ID
+    File:       file,
+    Filename:   "updated_document.md",
+    Tags:       []string{"技术", "文档", "v2"},
+    Metadata: map[string]interface{}{
+        "author":  "John Doe",
+        "version": "2.0",
+    },
+})
+fmt.Printf("Document %s uploaded: %s\n", resp.DocumentID, resp.Message)
+
 // 列出文档
 docs, err := client.Documents.List(ctx, &sdk.ListDocumentsRequest{
     DatasetID: datasetID,
@@ -437,7 +455,7 @@ wg.Wait()
   - `GetStats()`
 
 - **Documents** - 文档管理
-  - `Upload()`, `List()`, `Get()`, `Delete()`
+  - `Upload()` - 上传/更新文档, `List()`, `Get()`, `Update()`, `Delete()`, `BatchDelete()`
 
 - **Search** - 搜索服务
   - `Search()`
