@@ -7,8 +7,8 @@ type SearchService struct {
 	client *Client
 }
 
-// SearchRequest 搜索请求
-type SearchRequest struct {
+// RetrieveRequest 召回请求
+type RetrieveRequest struct {
 	Query               string                 `json:"query"`
 	DatasetID           string                 `json:"dataset_id"`
 	TopK                int                    `json:"top_k,omitempty"`
@@ -27,7 +27,7 @@ type SearchResponse struct {
 }
 
 // Search 执行搜索
-func (s *SearchService) Retrieve(ctx context.Context, req *SearchRequest) (*SearchResponse, error) {
+func (s *SearchService) Retrieve(ctx context.Context, req *RetrieveRequest) (*SearchResponse, error) {
 	// 设置默认值
 	if req.TopK <= 0 {
 		req.TopK = 10

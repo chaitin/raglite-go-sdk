@@ -69,7 +69,7 @@ func main() {
     fmt.Printf("Dataset created: %s\n", dataset.Name)
 
     // 搜索
-    results, err := client.Search.Search(ctx, &sdk.SearchRequest{
+    results, err := client.Search.Retrieve(ctx, &sdk.RetrieveRequest{
         Query:     "如何使用 RAGLite",
         DatasetID: dataset.ID,
         TopK:      10,
@@ -311,14 +311,14 @@ err := client.Documents.BatchDelete(ctx, &sdk.BatchDeleteDocumentsRequest{
 
 ```go
 // 基础搜索
-results, err := client.Search.Search(ctx, &sdk.SearchRequest{
+results, err := client.Search.Retrieve(ctx, &sdk.RetrieveRequest{
     Query:     "RAGLite 是什么",
     DatasetID: datasetID,
     TopK:      10,
 })
 
 // 高级搜索（带过滤）
-results, err := client.Search.Search(ctx, &sdk.SearchRequest{
+results, err := client.Search.Retrieve(ctx, &sdk.RetrieveRequest{
     Query:               "机器学习算法",
     DatasetID:           datasetID,
     TopK:                20,
@@ -479,7 +479,7 @@ wg.Wait()
 ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 defer cancel()
 
-results, err := client.Search.Search(ctx, req)
+results, err := client.Search.Retrieve(ctx, req)
 ```
 
 ### 2. 复用客户端
@@ -506,7 +506,7 @@ func badPractice() {
 总是检查错误并适当处理：
 
 ```go
-result, err := client.Search.Search(ctx, req)
+result, err := client.Search.Retrieve(ctx, req)
 if err != nil {
     // 记录日志
     log.Printf("Search failed: %v", err)
