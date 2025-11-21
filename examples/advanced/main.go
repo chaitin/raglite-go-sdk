@@ -22,7 +22,29 @@ func main() {
 
 	ctx := context.Background()
 
-	// 高级示例 1: 检查模型配置
+	// 高级示例 1: 使用 Upsert 创建或更新模型
+	fmt.Println("=== 使用 Upsert 创建或更新模型 ===")
+	upsertResp, err := client.Models.Upsert(ctx, &sdk.UpsertModelRequest{
+		Name:      "GPT-4",
+		ModelType: "chat",
+		Provider:  "openai",
+		ModelName: "gpt-4",
+		Config: sdk.AIModelConfig{
+			APIKey:  os.Getenv("OPENAI_API_KEY"),
+			APIBase: "https://api.openai.com/v1",
+		},
+		Capabilities: sdk.ModelCapabilities{
+			ContextWindow: sdk.Ptr(8192),
+		},
+	})
+	if err != nil {
+		log.Printf("Failed to upsert model: %v", err)
+	} else {
+		fmt.Printf("Model %s: %s (ID: %s)\n", upsertResp.Action, upsertResp.Model.Name, upsertResp.Model.ID)
+	}
+	fmt.Println()
+
+	// 高级示例 2: 检查模型配置
 	fmt.Println("=== 检查模型配置 ===")
 	checkResp, err := client.Models.Check(ctx, &sdk.CheckModelRequest{
 		Provider:  "openai",
@@ -42,7 +64,7 @@ func main() {
 	}
 	fmt.Println()
 
-	// 高级示例 2: 创建多模型数据集
+	// 高级示例 3: 创建多模型数据集
 	fmt.Println("=== 创建多模型数据集 ===")
 
 	// 先创建必要的模型
@@ -78,7 +100,7 @@ func main() {
 	}
 	fmt.Printf("Dataset created: %s (ID: %s)\n\n", dataset.Name, dataset.ID)
 
-	// 高级示例 3: 带过滤的搜索
+	// 高级示例 4: 带过滤的搜索
 	fmt.Println("=== 带过滤的高级搜索 ===")
 	searchResp, err := client.Search.Retrieve(ctx, &sdk.RetrieveRequest{
 		Query:               "人工智能",
@@ -101,7 +123,7 @@ func main() {
 	}
 	fmt.Println()
 
-	// 高级示例 4: 批量操作
+	// 高级示例 5: 批量操作
 	fmt.Println("=== 批量上传文档 ===")
 	documents := []struct {
 		filename string
@@ -132,7 +154,7 @@ func main() {
 	time.Sleep(2 * time.Second)
 	fmt.Println()
 
-	// 高级示例 5: 错误处理
+	// 高级示例 6: 错误处理
 	fmt.Println("=== 错误处理示例 ===")
 	_, err = client.Datasets.Get(ctx, "non-existent-id")
 	if err != nil {
@@ -152,7 +174,7 @@ func main() {
 	}
 	fmt.Println()
 
-	// 高级示例 6: 更新模型配置
+	// 高级示例 7: 更新模型配置
 	fmt.Println("=== 更新数据集配置 ===")
 	updatedDataset, err := client.Datasets.Update(ctx, dataset.ID, &sdk.UpdateDatasetRequest{
 		Status: sdk.Ptr("active"),
@@ -169,34 +191,30 @@ func main() {
 }
 
 func createOrGetModel(ctx context.Context, client *sdk.Client, modelType, modelName string) (*sdk.AIModel, error) {
-	// 先尝试列出已存在的模型
-	models, err := client.Models.List(ctx, &sdk.ListModelsRequest{
-		ModelType: modelType,
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	// 查找匹配的模型
-	for _, model := range models.Models {
-		if model.ModelName == modelName {
-			return &model, nil
-		}
-	}
-
-	// 如果不存在，创建新模型
+	// 使用 Upsert 方法自动处理创建或更新
 	provider := "openai"
+	apiBase := "https://api.openai.com/v1"
 	if modelType == "sparse" {
 		provider = "local"
+		apiBase = "http://localhost:9200"
+	} else if modelType == "reranker" {
+		provider = "local"
+		apiBase = "http://localhost:8001"
 	}
 
-	return client.Models.Create(ctx, &sdk.CreateModelRequest{
+	result, err := client.Models.Upsert(ctx, &sdk.UpsertModelRequest{
 		Name:      fmt.Sprintf("%s-%s", modelType, modelName),
 		ModelType: modelType,
 		Provider:  provider,
 		ModelName: modelName,
 		Config: sdk.AIModelConfig{
-			APIKey: os.Getenv("OPENAI_API_KEY"),
+			APIKey:  os.Getenv("OPENAI_API_KEY"),
+			APIBase: apiBase,
 		},
 	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &result.Model, nil
 }

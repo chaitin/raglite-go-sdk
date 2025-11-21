@@ -60,6 +60,24 @@ type CheckModelRequest struct {
 	Config    AIModelConfig `json:"config"`
 }
 
+// UpsertModelRequest 根据配置创建或更新模型请求
+type UpsertModelRequest struct {
+	Name         string            `json:"name,omitempty"`
+	Description  string            `json:"description,omitempty"`
+	ModelType    string            `json:"model_type"`
+	Provider     string            `json:"provider"`
+	ModelName    string            `json:"model_name"`
+	Config       AIModelConfig     `json:"config"`
+	Capabilities ModelCapabilities `json:"capabilities,omitempty"`
+	IsDefault    bool              `json:"is_default,omitempty"`
+}
+
+// UpsertModelResponse Upsert 响应
+type UpsertModelResponse struct {
+	Action string  `json:"action"` // "created" 或 "updated"
+	Model  AIModel `json:"model"`
+}
+
 // Create 创建 AI 模型
 func (s *ModelsService) Create(ctx context.Context, req *CreateModelRequest) (*AIModel, error) {
 	var result AIModel
@@ -136,6 +154,17 @@ func (s *ModelsService) ListProviderModels(ctx context.Context, req *ListProvide
 func (s *ModelsService) Check(ctx context.Context, req *CheckModelRequest) (*CheckModelResponse, error) {
 	var result CheckModelResponse
 	err := s.client.do(ctx, "POST", "/api/v1/models/check", req, &result)
+	if err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
+// Upsert 根据 API Base 和 Model Name 创建或更新模型
+// 如果找到匹配的模型则更新，否则创建新模型
+func (s *ModelsService) Upsert(ctx context.Context, req *UpsertModelRequest) (*UpsertModelResponse, error) {
+	var result UpsertModelResponse
+	err := s.client.do(ctx, "POST", "/api/v1/models/upsert", req, &result)
 	if err != nil {
 		return nil, err
 	}

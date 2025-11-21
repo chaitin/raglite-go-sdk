@@ -176,6 +176,22 @@ check, err := client.Models.Check(ctx, &sdk.CheckModelRequest{
         APIKey: "your-api-key",
     },
 })
+
+// 根据配置创建或更新模型（Upsert）
+// 根据 API Base 和 Model Name 查找，存在则更新，否则创建
+result, err := client.Models.Upsert(ctx, &sdk.UpsertModelRequest{
+    Name:      "GPT-4",
+    ModelType: "chat",
+    Provider:  "openai",
+    ModelName: "gpt-4",
+    Config: sdk.AIModelConfig{
+        APIKey:  "your-api-key",
+        APIBase: "https://api.openai.com/v1",
+    },
+    IsDefault: true,
+})
+// result.Action 为 "created" 或 "updated"
+// result.Model 为返回的模型对象
 ```
 
 ### 3. 数据集管理
