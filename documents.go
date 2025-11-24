@@ -37,7 +37,10 @@ type UploadDocumentResponse struct {
 
 // ListDocumentsRequest 列表查询请求
 type ListDocumentsRequest struct {
-	DatasetID string
+	DatasetID   string
+	DocumentIDs []string // 可选：按文档 ID 列表过滤
+	Page        int      // 页码，默认 1
+	PageSize    int      // 每页数量，默认 20，设为 0 则不分页
 }
 
 // ListDocumentsResponse 列表响应
@@ -152,8 +155,31 @@ func (s *DocumentsService) Upload(ctx context.Context, req *UploadDocumentReques
 
 // List 列出文档
 func (s *DocumentsService) List(ctx context.Context, req *ListDocumentsRequest) (*ListDocumentsResponse, error) {
-	var result ListDocumentsResponse
+	params := make(map[string]string)
+
+	// 添加 document_ids 参数（逗号分隔）
+	if len(req.DocumentIDs) > 0 {
+		params["document_ids"] = ""
+		for i, id := range req.DocumentIDs {
+			if i > 0 {
+				params["document_ids"] += ","
+			}
+			params["document_ids"] += id
+		}
+	}
+
+	// 添加分页参数
+	if req.Page > 0 {
+		params["page"] = fmt.Sprintf("%d", req.Page)
+	}
+	if req.PageSize >= 0 {
+		params["page_size"] = fmt.Sprintf("%d", req.PageSize)
+	}
+
 	path := fmt.Sprintf("/api/v1/datasets/%s/documents", req.DatasetID)
+	path = s.client.buildURL(path, params)
+
+	var result ListDocumentsResponse
 	err := s.client.do(ctx, "GET", path, nil, &result)
 	if err != nil {
 		return nil, err

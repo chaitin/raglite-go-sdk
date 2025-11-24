@@ -277,9 +277,29 @@ resp, err := client.Documents.Upload(ctx, &sdk.UploadDocumentRequest{
 })
 fmt.Printf("Document %s uploaded: %s\n", resp.DocumentID, resp.Message)
 
-// 列出文档
+// 列出文档（默认分页）
 docs, err := client.Documents.List(ctx, &sdk.ListDocumentsRequest{
     DatasetID: datasetID,
+})
+
+// 列出文档（自定义分页）
+docs, err := client.Documents.List(ctx, &sdk.ListDocumentsRequest{
+    DatasetID: datasetID,
+    Page:      2,
+    PageSize:  50,
+})
+
+// 列出文档（不分页，返回所有文档）
+docs, err := client.Documents.List(ctx, &sdk.ListDocumentsRequest{
+    DatasetID: datasetID,
+    PageSize:  0,
+})
+
+// 按文档 ID 列表过滤
+docs, err := client.Documents.List(ctx, &sdk.ListDocumentsRequest{
+    DatasetID:   datasetID,
+    DocumentIDs: []string{docID1, docID2, docID3},
+    PageSize:    0, // 不分页，返回所有匹配的文档
 })
 
 // 获取文档详情
