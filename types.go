@@ -104,19 +104,19 @@ type DatasetConfig struct {
 
 // Document 文档
 type Document struct {
-	ID           string                 `json:"id"`
-	DatasetID    string                 `json:"dataset_id"`
-	Title        string                 `json:"title"`
-	Filename     string                 `json:"filename"`
-	FilePath     string                 `json:"file_path"`
-	FileHash     string                 `json:"file_hash"`
-	FileSize     int64                  `json:"file_size"`
-	Metadata     map[string]interface{} `json:"metadata"`
-	Tags         []string               `json:"tags"`
-	Status       string                 `json:"status"`
-	ErrorMessage string                 `json:"error_message,omitempty"`
-	CreatedAt    time.Time              `json:"created_at"`
-	UpdatedAt    time.Time              `json:"updated_at"`
+	ID          string                 `json:"id"`
+	DatasetID   string                 `json:"dataset_id"`
+	Title       string                 `json:"title"`
+	Filename    string                 `json:"filename"`
+	FilePath    string                 `json:"file_path"`
+	FileHash    string                 `json:"file_hash"`
+	FileSize    int64                  `json:"file_size"`
+	Metadata    map[string]interface{} `json:"metadata"`
+	Tags        []string               `json:"tags"`
+	Status      string                 `json:"status"`
+	ProgressMsg string                 `json:"progress_msg,omitempty"`
+	CreatedAt   time.Time              `json:"created_at"`
+	UpdatedAt   time.Time              `json:"updated_at"`
 }
 
 // SearchResult 搜索结果
