@@ -184,3 +184,8 @@ func (j JSON) MarshalJSON() ([]byte, error) {
 func (j *JSON) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &j.Data)
 }
+
+type ChatMessage struct {
+	Role    string `json:"role"`
+	Content string `json:"content"`
+}

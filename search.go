@@ -16,6 +16,7 @@ type RetrieveRequest struct {
 	SimilarityThreshold float64                `json:"similarity_threshold,omitempty"`
 	Metadata            map[string]interface{} `json:"metadata,omitempty"`
 	Tags                []string               `json:"tags,omitempty"`
+	ChatHistory         []ChatMessage          `json:"chat_history,omitempty"`
 }
 
 // SearchResponse 搜索响应
