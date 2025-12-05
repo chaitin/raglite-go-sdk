@@ -10,6 +10,18 @@ func Ptr[T any](v T) *T {
 	return &v
 }
 
+// Decode 将 map/struct 解码到目标结构体，常用于解析 Metadata
+func Decode[T any](data any) T {
+	var result T
+	if data == nil {
+		return result
+	}
+	if b, err := json.Marshal(data); err == nil {
+		json.Unmarshal(b, &result)
+	}
+	return result
+}
+
 // APIResponse 统一的 API 响应结构
 type APIResponse struct {
 	Success bool        `json:"success"`
@@ -104,19 +116,19 @@ type DatasetConfig struct {
 
 // Document 文档
 type Document struct {
-	ID          string                 `json:"id"`
-	DatasetID   string                 `json:"dataset_id"`
-	Title       string                 `json:"title"`
-	Filename    string                 `json:"filename"`
-	FilePath    string                 `json:"file_path"`
-	FileHash    string                 `json:"file_hash"`
-	FileSize    int64                  `json:"file_size"`
-	Metadata    map[string]interface{} `json:"metadata"`
-	Tags        []string               `json:"tags"`
-	Status      string                 `json:"status"`
-	ProgressMsg string                 `json:"progress_msg,omitempty"`
-	CreatedAt   time.Time              `json:"created_at"`
-	UpdatedAt   time.Time              `json:"updated_at"`
+	ID          string    `json:"id"`
+	DatasetID   string    `json:"dataset_id"`
+	Title       string    `json:"title"`
+	Filename    string    `json:"filename"`
+	FilePath    string    `json:"file_path"`
+	FileHash    string    `json:"file_hash"`
+	FileSize    int64     `json:"file_size"`
+	Metadata    JSON      `json:"metadata"`
+	Tags        []string  `json:"tags"`
+	Status      string    `json:"status"`
+	ProgressMsg string    `json:"progress_msg,omitempty"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
 }
 
 // SearchResult 搜索结果

@@ -12,7 +12,7 @@ import (
 
 func main() {
 	// 创建客户端
-	client, err := sdk.NewClient("http://localhost:8080")
+	client, err := sdk.NewClient("http://localhost:5050")
 	if err != nil {
 		log.Fatalf("Failed to create client: %v", err)
 	}

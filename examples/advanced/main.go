@@ -13,7 +13,7 @@ import (
 func main() {
 	// 创建带自定义配置的客户端
 	client, err := sdk.NewClient(
-		"http://localhost:8080",
+		"http://localhost:5050",
 		sdk.WithTimeout(60*time.Second),
 	)
 	if err != nil {
