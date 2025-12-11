@@ -17,12 +17,13 @@ type DocumentsService struct {
 
 // UploadDocumentRequest 上传文档请求
 type UploadDocumentRequest struct {
-	DatasetID  string
-	DocumentID string
-	File       io.Reader
-	Filename   string
-	Tags       []string
-	Metadata   map[string]interface{}
+	DatasetID       string
+	DocumentID      string
+	File            io.Reader
+	Filename        string
+	Tags            []string
+	Metadata        map[string]interface{}
+	ExtractKeywords bool
 }
 
 // UploadDocumentResponse 上传文档响应
@@ -99,6 +100,13 @@ func (s *DocumentsService) Upload(ctx context.Context, req *UploadDocumentReques
 	if req.DocumentID != "" {
 		if err := writer.WriteField("document_id", req.DocumentID); err != nil {
 			return nil, fmt.Errorf("failed to write document_id field: %w", err)
+		}
+	}
+
+	// 添加 extract_keywords
+	if req.ExtractKeywords {
+		if err := writer.WriteField("extract_keywords", "true"); err != nil {
+			return nil, fmt.Errorf("failed to write extract_keywords field: %w", err)
 		}
 	}
 
