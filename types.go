@@ -57,6 +57,7 @@ type AIModelConfig struct {
 	// API 配置
 	APIKey     string `json:"api_key,omitempty"`
 	APIBase    string `json:"api_base,omitempty"`
+	APIHeader  string `json:"api_header,omitempty"`
 	APIVersion string `json:"api_version,omitempty"`
 	OrgID      string `json:"org_id,omitempty"`
 
