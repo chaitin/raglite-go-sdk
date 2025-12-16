@@ -71,6 +71,7 @@ type UpsertModelRequest struct {
 	Config       AIModelConfig     `json:"config"`
 	Capabilities ModelCapabilities `json:"capabilities,omitempty"`
 	IsDefault    bool              `json:"is_default,omitempty"`
+	IsActive     bool              `json:"is_active,omitempty"`
 }
 
 // UpsertModelResponse Upsert 响应
