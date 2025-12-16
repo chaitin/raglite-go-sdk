@@ -32,6 +32,7 @@ type UpdateModelRequest struct {
 	Capabilities *ModelCapabilities `json:"capabilities,omitempty"`
 	Status       *string            `json:"status,omitempty"`
 	IsDefault    *bool              `json:"is_default,omitempty"`
+	IsActive     *bool              `json:"is_active,omitempty"`
 }
 
 // ListModelsRequest 列表查询请求
