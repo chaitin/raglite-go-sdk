@@ -17,13 +17,17 @@ type DocumentsService struct {
 
 // UploadDocumentRequest 上传文档请求
 type UploadDocumentRequest struct {
-	DatasetID        string
-	DocumentID       string
-	File             io.Reader
-	Filename         string
-	Tags             []string
-	Metadata         map[string]interface{}
-	ExtractKeywords  bool
+	DatasetID  string
+	DocumentID string
+	File       io.Reader
+	Filename   string
+	Tags       []string
+	Metadata   map[string]interface{}
+
+	// 是否提取文档内容的关键词，会在解析完成后异步通知结果
+	ExtractKeywords bool
+
+	// 是否仅提取文档内容的关键词，不会解析文档内容，用于只在给定文档内容中提取关键词的场景
 	KeywordsOnlyMode bool
 }
 
