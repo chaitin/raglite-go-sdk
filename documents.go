@@ -24,6 +24,7 @@ type UploadDocumentRequest struct {
 	Tags            []string
 	Metadata        map[string]interface{}
 	ExtractKeywords bool
+	KeywordOnlyMode bool
 }
 
 // UploadDocumentResponse 上传文档响应
@@ -107,6 +108,12 @@ func (s *DocumentsService) Upload(ctx context.Context, req *UploadDocumentReques
 	if req.ExtractKeywords {
 		if err := writer.WriteField("extract_keywords", "true"); err != nil {
 			return nil, fmt.Errorf("failed to write extract_keywords field: %w", err)
+		}
+	}
+
+	if req.KeywordOnlyMode {
+		if err := writer.WriteField("keywords_only_mode", "true"); err != nil {
+			return nil, fmt.Errorf("failed to write keywords_only_mode field: %w", err)
 		}
 	}
 
