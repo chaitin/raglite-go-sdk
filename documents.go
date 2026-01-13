@@ -17,14 +17,14 @@ type DocumentsService struct {
 
 // UploadDocumentRequest 上传文档请求
 type UploadDocumentRequest struct {
-	DatasetID       string
-	DocumentID      string
-	File            io.Reader
-	Filename        string
-	Tags            []string
-	Metadata        map[string]interface{}
-	ExtractKeywords bool
-	KeywordOnlyMode bool
+	DatasetID        string
+	DocumentID       string
+	File             io.Reader
+	Filename         string
+	Tags             []string
+	Metadata         map[string]interface{}
+	ExtractKeywords  bool
+	KeywordsOnlyMode bool
 }
 
 // UploadDocumentResponse 上传文档响应
@@ -111,7 +111,7 @@ func (s *DocumentsService) Upload(ctx context.Context, req *UploadDocumentReques
 		}
 	}
 
-	if req.KeywordOnlyMode {
+	if req.KeywordsOnlyMode {
 		if err := writer.WriteField("keywords_only_mode", "true"); err != nil {
 			return nil, fmt.Errorf("failed to write keywords_only_mode field: %w", err)
 		}
