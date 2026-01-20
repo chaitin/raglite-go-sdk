@@ -20,6 +20,7 @@ type UploadDocumentRequest struct {
 	DatasetID  string
 	DocumentID string
 	File       io.Reader
+	Title      string
 	Filename   string
 	Tags       []string
 	Metadata   map[string]interface{}
@@ -105,6 +106,12 @@ func (s *DocumentsService) Upload(ctx context.Context, req *UploadDocumentReques
 	if req.DocumentID != "" {
 		if err := writer.WriteField("document_id", req.DocumentID); err != nil {
 			return nil, fmt.Errorf("failed to write document_id field: %w", err)
+		}
+	}
+
+	if req.Title != "" {
+		if err := writer.WriteField("title", req.Title); err != nil {
+			return nil, fmt.Errorf("failed to write title field: %w", err)
 		}
 	}
 
