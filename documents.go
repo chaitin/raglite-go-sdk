@@ -253,6 +253,23 @@ type UpdateDocumentRequest struct {
 	Tags       []string               `json:"tags,omitempty"`
 }
 
+// ReindexResponse 重新索引单个文档响应
+type ReindexResponse struct {
+	Message    string `json:"message"`
+	DocumentID string `json:"document_id"`
+}
+
+// Reindex 重新索引单个文档
+func (s *DocumentsService) Reindex(ctx context.Context, datasetID, documentID string) (*ReindexResponse, error) {
+	var result ReindexResponse
+	path := fmt.Sprintf("/api/v1/datasets/%s/documents/%s/reindex", datasetID, documentID)
+	err := s.client.do(ctx, "POST", path, nil, &result)
+	if err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
 // Update 更新文档的 metadata 和 tags
 func (s *DocumentsService) Update(ctx context.Context, req *UpdateDocumentRequest) (*Document, error) {
 	var result Document
